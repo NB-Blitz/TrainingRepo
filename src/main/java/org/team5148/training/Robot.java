@@ -23,11 +23,12 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		timer.reset();
 		timer.start();
+		navx.reset();
 	}
 
 	@Override
 	public void autonomousPeriodic() {
-		double angle = navx.getFusedHeading();
+		double angle = (navx.getAngle() + 180) % 360;
 		double time = timer.get();
 
 		SmartDashboard.putNumber("Angle", angle);
@@ -38,10 +39,10 @@ public class Robot extends TimedRobot {
 			backLeft.set(-0.2);
 			backRight.set(0.2);
 		} else if (time >= 1 && time <= 6) {
-			if (angle <= 90) {
+			if (angle <= 270) {
 				frontLeft.set(-0.2);
-				frontRight.set(0.2);
-				backLeft.set(0.2);
+				frontRight.set(-0.2);
+				backLeft.set(-0.2);
 				backRight.set(-0.2);
 			} else {
 				frontLeft.set(0);
@@ -73,5 +74,6 @@ public class Robot extends TimedRobot {
 		frontRight.set(speed * (-x + y - z));
 		backLeft.set(-speed * (-x + y + z));
 		backRight.set(speed * (x + y + z));
+
 	}
 }
