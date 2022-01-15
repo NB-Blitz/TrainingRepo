@@ -1,5 +1,7 @@
 package org.team5148.training;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -11,10 +13,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
 
-	CANSparkMax frontLeft = new CANSparkMax(1, MotorType.kBrushless);
-	CANSparkMax frontRight = new CANSparkMax(3, MotorType.kBrushless);
-	CANSparkMax backLeft = new CANSparkMax(2, MotorType.kBrushless);
-	CANSparkMax backRight = new CANSparkMax(4, MotorType.kBrushless);
+	CANTSparkMax frontLeft = new CANTSparkMax(1, MotorType.kBrushless);
+	CANTSparkMax frontRight = new CANTSparkMax(3, MotorType.kBrushless);
+	CANTSparkMax backLeft = new CANTSparkMax(2, MotorType.kBrushless);
+	CANTSparkMax backRight = new CANTSparkMax(4, MotorType.kBrushless);
+	CANTSparkMax tallGun = new CANTSparkMax(5, MotorType.kBrushless);
+	CANTSparkMax babyGun = new CANTSparkMax(6, MotorType.kBrushless);
+	TalonSRX ReloadJohn = new TalonSRX(8);
+	CANTSparkMax ReloadBilly = new CANTSparkMax(9, MotorType.kBrushless);
+	CANTSparkMax ReloadBobby = new CANTSparkMax(10, MotorType.kBrushless);
+	CANTSparkMax ReloadJohnny = new CANTSparkMax(11, MotorType.kBrushless);
 	Joystick bill = new Joystick(3);
 	Timer timer = new Timer();
 	AHRS navx = new AHRS();
@@ -69,11 +77,32 @@ public class Robot extends TimedRobot {
 		double z = -bill.getZ();
 		double slider = bill.getThrottle();
 		double speed = 0.2 * (-slider + 1) / 2;
+		boolean BBBJTTL = bill.getRawButton(1); // BBBJTL = billy bob boe joe the third L
+		boolean BBBBTFIL = bill.getRawButton(2); // BBBBTFIL = bobby billy bob bill the fifteenth IL
+		boolean JJJJJTTTXXXXVIII = true; // JJJJJTTTXXXXVIII = JimmyJaqavienceJohnJohnathanJimmythonTheThirtyThird
+											// XXXXVIII
 
 		frontLeft.set(-speed * (x + y - z));
 		frontRight.set(speed * (-x + y - z));
 		backLeft.set(-speed * (-x + y + z));
 		backRight.set(speed * (x + y + z));
-
+		if (BBBJTTL == true) {
+			tallGun.set(-1);
+			babyGun.set(1);
+		} else {
+			tallGun.set(0);
+			babyGun.set(0);
+		}
+		if (BBBBTFIL == true) {
+			ReloadBilly.set(-0.8);
+			ReloadBobby.set(-0.8);
+			ReloadJohnny.set(0.4);
+			ReloadJohn.set(ControlMode.PercentOutput, -0.4);
+		} else {
+			ReloadBilly.set(0);
+			ReloadBobby.set(0);
+			ReloadJohnny.set(0);
+			ReloadJohn.set(ControlMode.PercentOutput, 0);
+		}
 	}
 }
